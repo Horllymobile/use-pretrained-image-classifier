@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/print_results.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:
+# PROGRAMMER: Horllymobile
+# DATE CREATED: Fri 23 Jun 2023
 # REVISED DATE: 
 # PURPOSE: Create a function print_results that prints the results statistics
 #          from the results statistics dictionary (results_stats_dic). It 
@@ -61,6 +61,35 @@ def print_results(results_dic, results_stats_dic, model,
                               False doesn't print anything(default) (bool) 
     Returns:
            None - simply printing results.
-    """    
-    None
+    """
+    print(f'Classifier model: {model}')
+
+    print(f'N images: {results_stats_dic["n_images"]}', end=" ")
+    print(f'N Dog Images: {results_stats_dic["n_dogs_img"]}', end=" ")
+    print(f'N NotDog Images: {results_stats_dic["n_notdogs_img"]}')
+
+    def getKeyName(key):
+        w = ''
+        for word in key:
+            if word.isalpha():
+                w += word + ' '
+        return w.capitalize()
+
+    for key, value in results_stats_dic.items():
+        if key.startswith('p'):
+            print(f'{getKeyName(key.split("_"))}: {value}')
+
+    if print_incorrect_dogs:
+        print("Misclassified Dogs:")
+        for key, value in results_dic.items():
+            if sum(results_dic[key][3:]) == 1:
+                print(
+                    f'\tPet Image: {key} Classifier Labels: {results_dic[key][1]}')
+
+    if print_incorrect_breed:
+        print("Misclassified Breed's of Dog:")
+        for key, value in results_dic.items():
+            if sum(results_dic[key][3:]) == 2 and results_dic[key][2] == 0:
+                print(
+                    f'\tPet Image: {key} Classifier Labels: {results_dic[key][1]}')
                 
